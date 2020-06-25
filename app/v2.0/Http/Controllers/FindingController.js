@@ -154,6 +154,13 @@
 		// Jika sudah terdapat data, maka akan mengupdate Data Finding.
 		if ( check.length > 0 ) {
 
+			// if(check[0].PROGRESS == 100 && check[0].RATING_VALUE != 0) {
+			// 	return res.send({
+			// 		status: true,
+			// 		message: "skip update! progress sudah 100",
+			// 		data: []
+			// 	});
+			// }
 			var update_data = {
 				WERKS: req.body.WERKS || "",
 				BLOCK_CODE: req.body.BLOCK_CODE || "",
@@ -162,7 +169,7 @@
 				FINDING_PRIORITY: req.body.FINDING_PRIORITY || "",
 				DUE_DATE: req.body.DUE_DATE === undefined ? 0 : HelperLib.date_format( req.body.DUE_DATE, 'YYYYMMDDhhmmss' ),
 				ASSIGN_TO: req.body.ASSIGN_TO || "",
-				PROGRESS: req.body.PROGRESS || 0,
+				PROGRESS: check[0].PROGRESS == 100 ? 100 : req.body.PROGRESS || 0,
 				LAT_FINDING: req.body.LAT_FINDING || "",
 				LONG_FINDING: req.body.LONG_FINDING || "",
 				REFFERENCE_INS_CODE: req.body.REFFERENCE_INS_CODE || "",
@@ -192,7 +199,7 @@
 						FNDCT: req.body.FINDING_CATEGORY || "",
 						FNDDS: req.body.FINDING_DESC || "",
 						FNDPR: req.body.FINDING_PRIORITY || "",
-						DUE_DATE: req.body.END_TIME === undefined ? 0 : HelperLib.date_format( req.body.END_TIME, 'YYYYMMDDhhmmss' ),
+						DUE_DATE: req.body.DUE_DATE === undefined ? 0 : HelperLib.date_format( req.body.DUE_DATE, 'YYYYMMDDhhmmss' ),
 						ASSTO: req.body.ASSIGN_TO || "",
 						PRGRS: req.body.PROGRESS || "",
 						LATFN: req.body.LAT_FINDING || "",
