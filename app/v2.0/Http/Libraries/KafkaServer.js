@@ -3,11 +3,11 @@
 | Variable
 |--------------------------------------------------------------------------
 */
-const Kafka = require( 'kafka-node' );
+const { Kafka } = require('kafkajs');
+
 
 //Models
 const KafkaErrorLog = require( _directory_base + '/app/v2.0/Http/Models/KafkaErrorLog.js' );
-
 /*
 |--------------------------------------------------------------------------
 | Kafka Server Library
@@ -19,40 +19,48 @@ const KafkaErrorLog = require( _directory_base + '/app/v2.0/Http/Models/KafkaErr
 | high-throughput, low-latency platform for handling real-time data feeds.
 |
 */
+	const kafka = new Kafka({
+		clientId: 'MSA-INSPECTION',
+		brokers: [config.app.kafka[config.app.env].server_host]
+	})
+	
+	const producer = kafka.producer()
+	
 	class KafkaServer {
 
-		consumer () {
-			// const Consumer = Kafka.Consumer;
-			// const Client = new Kafka.KafkaClient( {
-			// 	kafkaHost: '149.129.252.13:9092'
-			// } );
-			// const consumer_kafka_client = new Consumer(
-			// 	Client,
-			// 	[
-			// 		{
-			// 			topic: 'ferdinand_topic_ebcc', 
-			// 			partition: 0 
-			// 		}
-			// 	],
-			// 	{
-			// 		autoCommit: true,
-			// 		fetchMaxWaitMs: 1000,
-			// 		fetchMaxBytes: 1024 * 1024,
-			// 		encoding: 'utf8',
-			// 		fromOffset: false
-			// 	}
-			// );
-			// consumer_kafka_client.on( 'message', async function( message ) {
-			// 	// var value = message.value.split( "|" );
-			// 	// var data = JSON.parse( value[1] );
-			// 	console.log( message );
-			// })
-			// consumer_kafka_client.on( 'error', function( err ) {
-			// 	console.log( 'error', err );
-			// });
-		}
+		//producer dengan retry
+		async producer(topic, message) {
+			// Producing
+			try {
+				await producer.connect();
+				await producer.send({
+					topic: topic,
+					messages: [
+						{ value: message },
+					],
+					retry: {
+						initialRetryTime: 100,
+						retries: 5 //retry dengan maksimal lima kali percobaan gagal
+					}
+				});
+				console.log( '[KAFKA PRODUCER] - Broker Update success.' );
+			} catch (error) {
+				console.log( '[KAFKA PRODUCER] - Connection Error.' );
+				console.log(error);
+				//throw err;
+				let data = JSON.parse( message );
 
-		producer ( topic, messages ) {
+				let set = new KafkaErrorLog( {
+					TR_CODE: data.FNDCD,
+					TOPIC: topic,
+					INSERT_TIME: data.INSTM
+				});
+				set.save();
+				console.log( `simpan ke TR_KAFKA_ERROR_LOGS!` );
+				console.log( set );
+			}
+		}
+		/*producer ( topic, messages ) {
 			// Class
 			const Producer = Kafka.Producer;
 			const Client = new Kafka.KafkaClient( { 
@@ -96,7 +104,7 @@ const KafkaErrorLog = require( _directory_base + '/app/v2.0/Http/Models/KafkaErr
 			});
 		}
 
-
+		*/
 
 	}
 
