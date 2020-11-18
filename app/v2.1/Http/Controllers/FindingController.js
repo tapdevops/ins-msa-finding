@@ -404,7 +404,7 @@
 			//kondisi ketika insertData
 			if(oldFinding == null) {
 				let estate = await Estate.findOne({WERKS: newFinding.WERKS}).select({_id: 0, EST_NAME: 1});
-				let block = await Block.findOne({BLOCK_CODE: newFinding.BLOCK_CODE}).select({_id: 0, BLOCK_NAME: 1});
+				let block = await Block.findOne({WERKS: newFinding.WERKS, BLOCK_CODE: newFinding.BLOCK_CODE}).select({_id: 0, BLOCK_NAME: 1});
 				let user = await ViewUserAuth.findOne({USER_AUTH_CODE: newFinding.INSERT_USER}).select({_id: 0, HRIS_FULLNAME: 1, PJS_FULLNAME: 1});
 				let name = user.HRIS_FULLNAME ? user.HRIS_FULLNAME : user.PJS_FULLNAME;
 					name = name.toLowerCase()
@@ -428,7 +428,7 @@
 					//ketika yang diupdate progress finding
 					if (oldFinding.PROGRESS != newFinding.PROGRESS) {
 						let estate = await Estate.findOne({WERKS: oldFinding.WERKS}).select({_id: 0, EST_NAME: 1});
-						let block = await Block.findOne({BLOCK_CODE: oldFinding.BLOCK_CODE}).select({_id: 0, BLOCK_NAME: 1});
+						let block = await Block.findOne({WERKS: oldFinding.WERKS, BLOCK_CODE: oldFinding.BLOCK_CODE}).select({_id: 0, BLOCK_NAME: 1});
 						let user = await ViewUserAuth.findOne({USER_AUTH_CODE: oldFinding.ASSIGN_TO}).select({_id: 0, HRIS_FULLNAME: 1, PJS_FULLNAME: 1});
 						let name = user.HRIS_FULLNAME ? user.HRIS_FULLNAME : user.PJS_FULLNAME;
 							name = name.toLowerCase()
