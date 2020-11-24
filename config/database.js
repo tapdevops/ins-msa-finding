@@ -51,6 +51,34 @@
                 ssl: false
             }
         },
+		inspection: {
+			dev: {
+				url: 'mongodb://s_inspeksi:s_inspeksi@dbmongodev.tap-agri.com:4848/s_inspeksi?authSource=s_inspeksi',
+				ssl: false
+			},
+			qa: {
+				url: 'mongodb://s_inspeksi:1nsp3k5i2019@dbmongoqa.tap-agri.com:4848/s_inspeksi?authSource=s_inspeksi',
+				ssl: false
+			},
+			prod: {
+				url: 'mongodb://s_inspeksi:1nsp3k5i2019@dbmongo.tap-agri.com:4848/s_inspeksi?authSource=s_inspeksi',
+				ssl: false
+			}
+		},
+		ebccVal: {
+			dev: {
+				url: 'mongodb://s_ebcc_validation:s_ebcc_validation@dbmongodev.tap-agri.com:4848/s_ebcc_validation?authSource=s_ebcc_validation',
+				ssl: false
+			},
+			qa: {
+				url: 'mongodb://s_ebcc_validation:38ccvalid2019@dbmongoqa.tap-agri.com:4848/s_ebcc_validation?authSource=s_ebcc_validation',
+				ssl: false
+			},
+			prod: {
+				url: 'mongodb://s_ebcc_validation:38ccvalid2019@dbmongo.tap-agri.com:4848/s_ebcc_validation?authSource=s_ebcc_validation',
+				ssl: false
+			}
+		},
 		report: {
 			dev: {
 				url: 'mongodb://s_report:s_report@dbmongodev.tap-agri.com:4848/s_report?authSource=s_report',

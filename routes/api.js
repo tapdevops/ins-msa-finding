@@ -11,6 +11,7 @@ const Controllers = {
 	v_2_1: {
 		Finding: require(_directory_base + '/app/v2.1/Http/Controllers/FindingController.js'),
 		Notification: require(_directory_base + '/app/v2.1/Http/Controllers/NotificationController.js'),
+		SyncMobile: require(_directory_base + '/app/v2.1/Http/Controllers/SyncMobileController.js'),
 	},
 	v_2_0: {
 		Finding: require(_directory_base + '/app/v2.0/Http/Controllers/FindingController.js'),
@@ -93,6 +94,11 @@ module.exports = (app) => {
 	app.post('/api/v2.1/finding', Middleware.v_2_0.VerifyToken, Controllers.v_2_1.Finding.create_or_update);
 	app.get('/api/v2.1/sync-mobile/comment', Middleware.v_2_0.VerifyToken, Controllers.v_2_1.Finding.findComment);
 	app.post('/api/v2.1/finding/comment', Middleware.v_2_0.VerifyToken, Controllers.v_2_1.Finding.create_or_update_comment);
+	app.post('/api/v2.1/notification', Middleware.v_2_0.VerifyToken, Controllers.v_2_1.Notification.create);
+	app.get('/api/v2.1/point-notification', Middleware.v_2_0.VerifyToken, Controllers.v_2_1.Notification.notifPoint);
+	//trigger untuk hitung point
+	app.get('/api/v2.1/sync-mobile/finding/:start_date/:end_date', Middleware.v_2_0.VerifyToken, Controllers.v_2_1.SyncMobile.synchronize);
+	app.get('/api/v2.1/finding', Middleware.v_2_0.VerifyToken, Controllers.v_2_1.Finding.find);
 
 	/*
 	 |--------------------------------------------------------------------------

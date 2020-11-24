@@ -179,7 +179,7 @@
                 findings.map(async (finding) => {
                     try {
                         let estate = await Estate.findOne({WERKS: finding.WERKS}).select({_id: 0, EST_NAME: 1});
-                        let block = await Block.findOne({BLOCK_CODE: finding.BLOCK_CODE}).select({_id: 0, BLOCK_NAME: 1});
+                        let block = await Block.findOne({WERKS: finding.WERKS, BLOCK_CODE: finding.BLOCK_CODE}).select({_id: 0, BLOCK_NAME: 1});
                         let assignToUser = await ViewUserAuth.findOne({USER_AUTH_CODE: finding.ASSIGN_TO}).select({_id: 0, HRIS_FULLNAME: 1, PJS_FULLNAME: 1});
                         let assignToName = assignToUser.HRIS_FULLNAME ? assignToUser.HRIS_FULLNAME : assignToUser.PJS_FULLNAME;
                         assignToName = assignToName.toLowerCase()
